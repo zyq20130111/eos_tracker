@@ -16,5 +16,3 @@ urls = (
 if __name__ == '__main__':
 
     Logger().Init()
-    app = web.application(urls, globals())
-    app.run()
