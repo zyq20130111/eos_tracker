@@ -16,3 +16,6 @@ if __name__ == '__main__':
 
     Logger().Init()
     BlockMgr().Instance().Start()
+
+    while 1:
+        pass
