@@ -17,5 +17,10 @@ if __name__ == '__main__':
     Logger().Init()
     BlockMgr().Instance().Start()
 
-    while 1:
+    try:
+        while 1:
+            pass
+    except KeyboardInterrupt:
         pass
+
+
