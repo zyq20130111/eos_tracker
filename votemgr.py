@@ -21,25 +21,6 @@ class VoteMgr(object):
     def Instance(self):
         return VoteMgr.__instance
 
-    def AddVoter(self,owner,proxy,producer,staked,is_proxy):
-
-         try:
-
-              db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
-              cursor = db.cursor()
-              sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(owner,proxy,producer,staked,is_proxy)
-
-              cursor.execute(sql)
-              db.commit()
-
-              cursor.close()
-              db.close()
-
-              Logger().Log(Text.TEXT5)
-         except:
-              Logger().Error(Text.TEXT4)
-
-
     def bwAction(self,frm,receive,total,transfer):
 
 	try:
@@ -88,7 +69,7 @@ class VoteMgr(object):
             cursor.execute(sql)
     
             for row in cursor.fetchall():
-                staked = row[5]
+                staked = row[4]
 
             cursor.fetchall()
 
@@ -116,6 +97,8 @@ class VoteMgr(object):
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(proxy)
             cursor.execute(sql)
+
+            cursor.fetchall()
 
             if(cursor.rowcount <= 0):
                 sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(proxy,"","",0,1)
@@ -148,7 +131,7 @@ class VoteMgr(object):
             if(cursor.rowcount <= 0):
                 sql = "INSERT INTO producers_tbl(owner,total_votes,is_active)VALUES ('%s',%d,%d)" %(producer,0,active)
             else:
-                sql = "UPDATE table producers_tb set is_active = %d  where owner = '%s'" %(active,producer)
+                sql = "UPDATE table producers_tbl set is_active = %d  where owner = '%s'" %(active,producer)
 
             cursor.execute(sql)
             db.commit()
@@ -216,13 +199,13 @@ class VoteMgr(object):
                 if(not proxy == ""):
                    sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,proxy,"",0,0)
                 else:
-                   sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,"",producers,0,0)
+                   sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,"",",".join(producers),0,0)
             else:
 
                 if(not proxy == ""):
                    sql = "UPDATE table voters_tbl set proxy = '%s' where owner = '%s'" %(proxy,voter) 
                 else:
-                   sql = "UPDATE table voters_tbl set producers = '%s' where owner = '%s'" %(producers,voter)
+                   sql = "UPDATE table voters_tbl set producer = '%s' where owner = '%s'" %(",".join(producers),voter)
 
             cursor.execute(sql)
 
