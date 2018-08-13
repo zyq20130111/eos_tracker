@@ -77,7 +77,7 @@ class VoteMgr(object):
         except:
            Logger().Error(Text.TEXT71)
 
-    def unbwAction(from,total):
+    def unbwAction(frm,total):
 
        try:
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
@@ -95,7 +95,7 @@ class VoteMgr(object):
             if(cursor.rowcount <= 0):
                 Logger().Log(Text.TEXT72)
             else:
-                sql = "UPDATE table voters_tbl set staked = %d where owner = '%s'" %(staked - total,from)
+                sql = "UPDATE table voters_tbl set staked = %d where owner = '%s'" %(staked - total,frm)
 
             cursor.execute(sql)
             db.commit()
