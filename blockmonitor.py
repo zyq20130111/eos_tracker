@@ -190,7 +190,9 @@ class BlockMgr(object):
             self.regProxy(proxy,isproxy)                   
 
         elif(action.account == "eosio" and action.name == "regproducer"):
-            producer = action.data.get("producer")        
+            print "regproducer a"
+            producer = action.data.get("producer")
+            print producer        
             self.regProducer(producer,1)
     
         elif(action.account == "eosio" and action.name == "unregprod"):
@@ -211,6 +213,7 @@ class BlockMgr(object):
          VoteMgr().Instance().regProxy(proxy,isproxy)
 
     def regProducer(self,producer,active):
+        print "regProducer(self,producer,active)"
         VoteMgr().Instance().regProducer(producer,active)
        
     def getBlockInfo(self,blockid):
