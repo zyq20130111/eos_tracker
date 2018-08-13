@@ -160,7 +160,7 @@ class VoteMgr(object):
 
     def voteAction(voter,proxy,producers):
 
-      try:
+        try:
 
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
@@ -222,5 +222,6 @@ class VoteMgr(object):
             db.close()
 
             Logger().Log(Text.TEXT78)
-       except:
+
+        except:
             Logger().Error(Text.TEXT79)
