@@ -186,14 +186,29 @@ class VoteMgr(object):
                 oldproducers = row[3].split(',')
                  
                 rowcount = rowcount + 1
+            
+            while(not oldproxy == ""):
+               
+               sql = "UPDATE table voters_tbl set staked = staked - %d where owner = '%s'" %(staked,oldproxy)
+               cursor.execute(sql)
+               
+               sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(oldproxy)
+               cursor.execute(sql)
+               cursor.fetchall()
 
-            if(not oldproxy == ""):
-                sql = "UPDATE table voters_tbl set staked = staked - %d where owner = '%s'" %(staked,oldproxy)
+               for row in cursor.fetchall():
+                  oldproxy = row[2]
+                  oldproducers = row[3].split(',')
+        
+               for pb in oldproducers:
+                  sql =  "UPDATE table producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
+                  cursor.execute(sql)
+               
 
             for pb in oldproducers:
                 sql =  "UPDATE table producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
+                cursor.execute(sql)
                 
-            cursor.execute(sql)
             
              #设置相关字段 
             if(rowcount <= 0):
@@ -212,11 +227,30 @@ class VoteMgr(object):
             cursor.execute(sql)
 
             #重新投票时会对新的proxy,producers加上staked
-            if(not proxy == ""):
-                sql = "UPDATE table voters_tbl set staked = staked + %d where owner = '%s'" %(staked,proxy)
+            newproxy = proxy
+            newproducers = []
+ 
+            while(not newproxy == ""):
 
-            for pb in oldproducers:
+               sql = "UPDATE table voters_tbl set staked = staked + %d where owner = '%s'" %(staked,newproxy)
+               cursor.execute(sql)
+
+               sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(newproxy)
+               cursor.execute(sql)
+               cursor.fetchall()
+
+               for row in cursor.fetchall():
+                  newproxy = row[2]
+                  newproducers = row[3].split(',')
+
+               for pb in newproducers:
+                  sql =  "UPDATE table producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                  cursor.execute(sql)
+
+
+            for pb in newproducers:
                 sql =  "UPDATE table producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                cursor.execute(sql)
         
             db.commit()
 
