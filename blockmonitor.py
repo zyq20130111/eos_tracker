@@ -181,7 +181,7 @@ class BlockMgr(object):
             isproxy = action.data.get("isproxy") 
             self.regProxy(proxy,isproxy)
 
-        elif(action.account == "eosio" and action.name = "unregproxy"):
+        elif(action.account == "eosio" and action.name == "unregproxy"):
             proxy = action.data.get("proxy")
             isproxy = action.data.get("isproxy")
             self.regProxy(proxy,isproxy)                   
