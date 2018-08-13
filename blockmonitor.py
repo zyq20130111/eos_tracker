@@ -146,6 +146,7 @@ class BlockMgr(object):
 
         elif(action.account == "eosio" and action.name == "delegatebw"):
          
+
             from = action.data.get("from")
             receiver = action.data.get("receiver")
             transfer = action.data.get("transfer")
