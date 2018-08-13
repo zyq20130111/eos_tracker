@@ -139,7 +139,7 @@ class VoteMgr(object):
             cursor = db.cursor()
 
             staked = 0
-            sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(producer)
+            sql = "SELECT * FROM producers_tbl  where owner ='%s'" %(producer)
             
             cursor.execute(sql)
              
@@ -150,7 +150,6 @@ class VoteMgr(object):
             else:
                 sql = "UPDATE table producers_tb set is_active = %d  where owner = '%s'" %(active,producer)
 
-            print cursor.rowcount,"dddddd"
             cursor.execute(sql)
             db.commit()
 
