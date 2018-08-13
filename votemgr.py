@@ -134,15 +134,19 @@ class VoteMgr(object):
 
     def regProducer(self,producer,active):
        try:
+            print "regProducer 1"
+            print producer
+ 
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
 
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(proxy)
+            print sql
             cursor.execute(sql)
              
             cursor.fetchall()
-
+            
             if(cursor.rowcount <= 0):
                 sql = "INSERT INTO producers_tbl(owner,total_votes,is_active)VALUES ('%s',%d,%d)" %(producer,0,active)
             else:
