@@ -147,7 +147,7 @@ class BlockMgr(object):
         elif(action.account == "eosio" and action.name == "delegatebw"):
          
 
-            from = action.data.get("from")
+            frm = action.data.get("from")
             receiver = action.data.get("receiver")
             transfer = action.data.get("transfer")
 
@@ -161,7 +161,7 @@ class BlockMgr(object):
             total =long((cpu + net) * 10000)
                            
 
-            self.bwAction(from,receiver,total,transfer)
+            self.bwAction(frm,receiver,total,transfer)
 
         elif(aciton.account == "eosio" and action.name == "undelegatebw"):
             
