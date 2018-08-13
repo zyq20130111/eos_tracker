@@ -133,7 +133,7 @@ class BlockMgr(object):
         if(action.data is None):
             return None
 
-        Logger().Log(action.name)
+        print(action.name)
 
         if(action.account == "eosio" and action.name == "voteproducer"):
             
