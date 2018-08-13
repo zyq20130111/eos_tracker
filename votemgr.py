@@ -40,12 +40,12 @@ class VoteMgr(object):
               Logger().Error(Text.TEXT4)
 
 
-    def bwAction(from,receive,total,transfer):
+    def bwAction(frm,receive,total,transfer):
 
 	try:
             voter = ""
             if(not transfer):
-                 voter = from
+                 voter = frm
             else:
                  voter = receive
 
