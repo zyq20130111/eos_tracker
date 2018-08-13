@@ -122,7 +122,8 @@ class BlockMgr(object):
         if(len(strs) <= 0 ):
             return None
         eos  = float(strs[0])
-        retur eos
+
+        return eos
      
     def parseAction(self,actionJson,trxid):
         
