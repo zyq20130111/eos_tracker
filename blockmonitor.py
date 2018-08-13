@@ -136,7 +136,13 @@ class BlockMgr(object):
         print(action.name)
         print("--------------")
         print actionJson
-        if(action.account == "eosio" and action.name == "voteproducer"):
+        if(action.account == "eosio" and action.name == "regproducer"):
+            print "regproducer a"
+            producer = action.data.get("producer")
+            print producer
+            self.regProducer(producer,1)
+
+        elif(action.account == "eosio" and action.name == "voteproducer"):
             
             voter = action.data.get("voter")
             proxy = action.data.get("proxy")
@@ -189,12 +195,6 @@ class BlockMgr(object):
             isproxy = action.data.get("isproxy")
             self.regProxy(proxy,isproxy)                   
 
-        elif(action.account == "eosio" and action.name == "regproducer"):
-            print "regproducer a"
-            producer = action.data.get("producer")
-            print producer        
-            self.regProducer(producer,1)
-    
         elif(action.account == "eosio" and action.name == "unregprod"):
             producer = action.data.get("producer")
             self.regProducer(producer,0)
