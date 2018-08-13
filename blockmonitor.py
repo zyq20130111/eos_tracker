@@ -189,8 +189,7 @@ class BlockMgr(object):
             self.regProxy(proxy,isproxy)                   
 
         elif(action.account == "eosio" and action.name == "regproducer"):
-            producer = action.data.get("producer")
-            url = action.data.get("url")        
+            producer = action.data.get("producer")        
             self.regProducer(producer,1)
     
         elif(action.account == "eosio" and action.name == "unregprod"):

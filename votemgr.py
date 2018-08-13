@@ -40,7 +40,7 @@ class VoteMgr(object):
               Logger().Error(Text.TEXT4)
 
 
-    def bwAction(frm,receive,total,transfer):
+    def bwAction(self,frm,receive,total,transfer):
 
 	try:
             voter = ""
@@ -77,7 +77,7 @@ class VoteMgr(object):
         except:
            Logger().Error(Text.TEXT71)
 
-    def unbwAction(frm,total):
+    def unbwAction(self,frm,total):
 
        try:
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
@@ -107,7 +107,7 @@ class VoteMgr(object):
        except:
             Logger().Error(Text.TEXT73) 
 
-    def regProxy(proxy,isproxy):
+    def regProxy(self,proxy,isproxy):
 
        try:
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
@@ -132,7 +132,7 @@ class VoteMgr(object):
        except:
             Logger().Error(Text.TEXT75)
 
-    def regProducer(producer,active):
+    def regProducer(self,producer,active):
        try:
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
@@ -158,7 +158,7 @@ class VoteMgr(object):
        except:
             Logger().Error(Text.TEXT77)
 
-    def voteAction(voter,proxy,producers):
+    def voteAction(self,voter,proxy,producers):
 
        try:
 
