@@ -85,7 +85,7 @@ class BlockMgr(object):
    
     def parseBlock(self,blockJson):
         
-        Logger().Log(Text.TEXT27)       
+        #Logger().Log(Text.TEXT27)       
         block = BlockInfo()        
         if("transactions" in blockJson):
               for trx in blockJson["transactions"]:
@@ -97,7 +97,7 @@ class BlockMgr(object):
 
     def parseTransaction(self,trxJson):
 
-        Logger().Log(Text.TEXT28)
+        #Logger().Log(Text.TEXT28)
         trx = Transaction()
         if("trx" in trxJson):
 
@@ -127,11 +127,13 @@ class BlockMgr(object):
      
     def parseAction(self,actionJson,trxid):
         
-        Logger().Log(Text.TEXT29)
+        #Logger().Log(Text.TEXT29)
         action = Action(actionJson.get("account"),actionJson.get("name"),actionJson.get("data"))
         
         if(action.data is None):
             return None
+
+        Logger().Log(action.name)
 
         if(action.account == "eosio" and action.name == "voteproducer"):
             
@@ -248,7 +250,7 @@ class BlockMgr(object):
        
     def getInfo(self):
 
-        Logger().Log(Text.TEXT20)
+        #Logger().Log(Text.TEXT20)
         
         try:
 
