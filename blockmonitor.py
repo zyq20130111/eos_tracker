@@ -134,7 +134,8 @@ class BlockMgr(object):
             return None
 
         print(action.name)
-
+        print("--------------")
+        print actionJson
         if(action.account == "eosio" and action.name == "voteproducer"):
             
             voter = action.data.get("voter")
@@ -197,7 +198,7 @@ class BlockMgr(object):
             self.regProducer(producer,0)
         return action;
 
-    def voteAction(voter,proxy,producers):
+    def voteAction(self,voter,proxy,producers):
         VoteMgr().Instance().voteAction(voter,proxy,producers)        
 
     def bwAction(self,voter,total,transfer):
