@@ -10,6 +10,7 @@ import pytz
 from config import Config  
 from logger import Logger
 from text  import Text
+from votemgr import VoteMgr
 
 class BlockInfo(object):
     def __init__(self):
@@ -115,7 +116,14 @@ class BlockMgr(object):
         return trx       
          
     
-    
+    def getEOS(self,str):
+        
+        strs = str.split("EOS")
+        if(len(strs) <= 0 ):
+            return None
+        eos  = float(strs[0])
+        retur eos
+     
     def parseAction(self,actionJson,trxid):
         
         Logger().Log(Text.TEXT29)
@@ -124,19 +132,83 @@ class BlockMgr(object):
         if(action.data is None):
             return None
 
-        if(action.account == "eosio.token" and action.name == "transfer"):
+        if(action.account == "eosio" and action.name == "voteproducer"):
             
-            toaccount = action.data.get("to")
-            frmaccount = action.data.get("from")
-            quantity = action.data.get("quantity")
+            voter = action.data.get("voter")
+            proxy = action.data.get("proxy")
+            producers = action.data.get("producers")
+
+            if(produces is None):
+               return None
+
+            self.voteAction(voter,proxy,producers)                   
+
+        elif(action.account == "eosio" and action.name == "delegatebw"):
+         
+            from = action.data.get("from")
+            receiver = action.data.get("receiver")
+            transfer = action.data.get("transfer")
+
+            net = action.data.get("stake_net_quantity")
+            net = self.getEOS(net)
 
 
-        elif(action.account == "eosio" and action.name == "voteproducer"):
+            cpu = action.data.get("stake_cpu_quantity")
+            cpu = self.getEOS(cpu)
+          
+            total =long((cpu + net) * 10000)
+                           
+
+            self.bwAction(from,receiver,total,transfer)
+
+        elif(aciton.account == "eosio" and action.name == "undelegatebw"):
             
-            voter = action.data.get("voter")           
- 
+            voter = action.data.get("from")
+
+            net = action.data.get("stake_net_quantity")
+            net = self.getEOS(net)
+
+
+            cpu = action.data.get("stake_cpu_quantity")
+            cpu = self.getEOS(cpu)
+
+            self.unbwAction(voter,total)
+
+        elif(aciton.account == "eosio" and action.name == "regproxy"):
+            proxy = action.data.get("proxy")
+            isproxy = action.data.get("isproxy") 
+            self.regProxy(proxy,isproxy)
+
+        elif(action.account == "eosio" and action.name = "unregproxy"):
+            proxy = action.data.get("proxy")
+            isproxy = action.data.get("isproxy")
+            self.regProxy(proxy,isproxy)                   
+
+        elif(action.account == "eosio" and action.name == "regproducer"):
+            producer = action.data.get("producer")
+            url = action.data.get("url")        
+            self.regProducer(producer,1)
+    
+        elif(action.account == "eosio" and action.name == "unregprod"):
+            producer = action.data.get("producer")
+            self.regProducer(producer,0)
         return action;
 
+    def voteAction(voter,proxy,producers):
+        VoteMgr().Instance().voteAction(voter,proxy,producers)        
+
+    def bwAction(self,voter,total,transfer):
+        VoteMgr().Instance().bwAction(voter,total,transfer)
+
+    def unbwAction(self,voter,total):
+        VoteMgr().Instance().unbwAction(voter,total)
+
+    def regProxy(self,proxy,isproxy):
+         VoteMgr().Instance().regProxy(proxy,isproxy)
+
+    def regProducer(self,producer,active):
+        VoteMgr().Instance().regProducer(producer,active)
+       
     def getBlockInfo(self,blockid):
      
         print(Text.TEXT10 % (blockid))
