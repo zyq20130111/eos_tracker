@@ -215,7 +215,7 @@ class BlockMgr(object):
        
     def getBlockInfo(self,blockid):
      
-        print(Text.TEXT10 % (blockid))
+        #print(Text.TEXT10 % (blockid))
         headers = {'content-type': "application/json"}
         url = Config.HTTP_URL + "get_block"
         try:
