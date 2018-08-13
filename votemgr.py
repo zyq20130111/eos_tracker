@@ -150,6 +150,7 @@ class VoteMgr(object):
             else:
                 sql = "UPDATE table producers_tb set is_active = %d  where owner = '%s'" %(active,producer)
 
+            print cursor.rowcount,"dddddd"
             cursor.execute(sql)
             db.commit()
 
