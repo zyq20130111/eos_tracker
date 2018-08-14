@@ -36,7 +36,7 @@ class VoteMgr(object):
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
             cursor.execute(sql)
-            print sql
+           
             for row in cursor.fetchall():
                 staked = row[4]
 
@@ -46,8 +46,25 @@ class VoteMgr(object):
                 sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,"","",total,0)
             else:
                 sql = "UPDATE voters_tbl SET staked = %d where owner = '%s'" %(total + staked,voter) 
-            print sql
+            
             cursor.execute(sql)
+
+            #投票者相关字段，重新投票时会对原有的proxy,producers减去staked
+            sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
+            cursor.execute(sql)
+
+            staked = 0
+            oldproxy = ""
+            oldproducers = []
+
+            for row in cursor.fetchall():
+
+                oldproxy = row[2]
+                staked = row[4]
+                oldproducers = row[3].split(',')
+
+            self.vote(cursor,oldproxy,oldproducers,staked)
+
             db.commit()    
                    
             cursor.close()
@@ -82,6 +99,23 @@ class VoteMgr(object):
                 sql = "UPDATE  voters_tbl SET staked = %d where owner = '%s'" %(staked - total,frm)
              
             cursor.execute(sql)
+
+            #投票者相关字段，重新投票时会对原有的proxy,producers减去staked
+            sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
+            cursor.execute(sql)
+
+            staked = 0 
+            oldproxy = ""
+            oldproducers = []
+                
+            for row in cursor.fetchall():
+
+                oldproxy = row[2]
+                staked = row[4]
+                oldproducers = row[3].split(',')
+
+            self.vote(cursor,oldproxy,oldproducers,-staked)
+
             db.commit()
             
 
@@ -148,6 +182,37 @@ class VoteMgr(object):
        except:
             Logger().Error(Text.TEXT77)
 
+    def vote(self,cursor,proxy,producers,num):
+ 
+        try:
+             while(not proxy == ""):
+ 
+               sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(staked,proxy)
+               cursor.execute(sql)
+
+               sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(proxy)
+               cursor.execute(sql)
+               cursor.fetchall()
+
+
+               proxy = ""
+               producers = []
+               for row in cursor.fetchall():
+                  proxy = row[2]
+                  producers = row[3].split(',')
+
+
+               for pb in producers:
+                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                  cursor.execute(sql)
+
+
+            for pb in producers:
+                sql =  "UPDATE producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                cursor.execute(sql)
+        except:
+             print "error"
+
     def voteAction(self,voter,proxy,producers):
             
        try:
@@ -162,8 +227,6 @@ class VoteMgr(object):
             cursor.execute(sql)
       
             staked = 0
-            oldstaked = 0
-            newstaked = 0
             oldproxy = ""
             oldproducers = []
 
@@ -172,37 +235,9 @@ class VoteMgr(object):
                 oldproxy = row[2]
                 staked = row[4]
                 oldproducers = row[3].split(',')
-                oldstaked = staked
-                newstaked = staked
                 rowcount = rowcount + 1
 
-            
-            while(not oldproxy == ""):
-               
-               sql = "UPDATE  voters_tbl set staked = staked - %d where owner = '%s'" %(oldstaked,oldproxy)
-               cursor.execute(sql)
-               
-               sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(oldproxy)
-               cursor.execute(sql)
-               cursor.fetchall()
-                
-               oldstaked = 0
-               oldproxy = ""   
-               oldproducers = []            
-               for row in cursor.fetchall():
-                  oldproxy = row[2]
-                  oldproducers = row[3].split(',')
-                  oldstaked  = row[4]
-
-               for pb in oldproducers:
-                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(oldstaked,pb)
-                  cursor.execute(sql)
-                  
-
-            for pb in oldproducers:
-                sql =  "UPDATE producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(oldstaked,pb)
-                cursor.execute(sql)
-                
+            self.vote(cursor,oldproxy,oldproducers,-staked) 
             
              #设置相关字段 
             if(rowcount <= 0):
@@ -224,36 +259,9 @@ class VoteMgr(object):
             #重新投票时会对新的proxy,producers加上staked
             newproxy = proxy
             newproducers = producers
-                        
-            while(not newproxy == ""):
-               
-               sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(newstaked,newproxy)
-               cursor.execute(sql)               
-
-               sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(newproxy)
-               cursor.execute(sql)
-               cursor.fetchall()
-               
-               newproxy = ""
-               newproducers = []
-
-               for row in cursor.fetchall():
-
-                  newproxy = row[2]
-                  newproducers = row[3].split(',')
-                  newstaked = row[4]
-
-               for pb in newproducers:
-                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(newstaked,pb)
-                  cursor.execute(sql)
-                  
-
-
-            for pb in newproducers:
-                sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(newstaked,pb)
-                cursor.execute(sql)
-                
-        
+            
+            self.vote(cursor,newproxy,newproducers,staked)
+ 
             db.commit()
 
             cursor.close()
