@@ -163,6 +163,8 @@ class VoteMgr(object):
             cursor.execute(sql)
       
             staked = 0
+            oldstaked = 0
+            newstaked = 0
             oldproxy = ""
             oldproducers = []
 
@@ -176,35 +178,36 @@ class VoteMgr(object):
                 oldproxy = row[2]
                 staked = row[4]
                 oldproducers = row[3].split(',')
-                 
+                oldstaked = staked
+                newstaked = staked
                 rowcount = rowcount + 1
 
             
             while(not oldproxy == ""):
                
-               sql = "UPDATE  voters_tbl set staked = staked - %d where owner = '%s'" %(staked,oldproxy)
+               sql = "UPDATE  voters_tbl set staked = staked - %d where owner = '%s'" %(oldstaked,oldproxy)
                cursor.execute(sql)
                
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(oldproxy)
                cursor.execute(sql)
                cursor.fetchall()
                 
+               oldstaked = 0
                oldproxy = ""   
                oldproducers = []            
                for row in cursor.fetchall():
                   oldproxy = row[2]
                   oldproducers = row[3].split(',')
-                  staked = row[4]
+                  oldstaked  = row[4]
 
                for pb in oldproducers:
-                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
+                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(oldstaked,pb)
                   cursor.execute(sql)
                   
 
             for pb in oldproducers:
-                sql =  "UPDATE producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
+                sql =  "UPDATE producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(oldstaked,pb)
                 cursor.execute(sql)
-                print sql,"to"
                 
             
              #设置相关字段 
@@ -220,7 +223,8 @@ class VoteMgr(object):
                    sql = "UPDATE  voters_tbl set proxy = '%s' where owner = '%s'" %(proxy,voter) 
                 else:
                    sql = "UPDATE  voters_tbl set producer = '%s' where owner = '%s'" %(",".join(producers),voter)
-            
+           
+            print sql 
             cursor.execute(sql)
 
             #重新投票时会对新的proxy,producers加上staked
@@ -229,7 +233,7 @@ class VoteMgr(object):
             
             while(not newproxy == ""):
 
-               sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(staked,newproxy)
+               sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(newstaked,newproxy)
                cursor.execute(sql)
                
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(newproxy)
@@ -241,15 +245,16 @@ class VoteMgr(object):
                for row in cursor.fetchall():
                   newproxy = row[2]
                   newproducers = row[3].split(',')
-                  
+                  newstaked = row[4]
+
                for pb in newproducers:
-                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(newstaked,pb)
                   cursor.execute(sql)
                   
 
 
             for pb in newproducers:
-                sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(newstaked,pb)
                 cursor.execute(sql)
                 
         
