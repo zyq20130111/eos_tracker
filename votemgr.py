@@ -24,6 +24,7 @@ class VoteMgr(object):
     def bwAction(self,frm,receive,total,transfer):
         
 	try:
+            print "bwAction",frm,receive,total
             voter = ""
             if(transfer ==  0):
                  voter = frm
@@ -61,6 +62,7 @@ class VoteMgr(object):
     def unbwAction(self,frm,total):
 
        try:
+            print "unbwAction",frm,total
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
 
@@ -91,6 +93,7 @@ class VoteMgr(object):
     def regProxy(self,proxy,isproxy):
 
        try:
+            print "regProxy",proxy,isproxy
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
 
@@ -117,7 +120,7 @@ class VoteMgr(object):
 
     def regProducer(self,producer,active):
        try:
- 
+            print "regProducer",producer,active
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
 
