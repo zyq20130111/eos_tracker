@@ -81,16 +81,15 @@ class VoteMgr(object):
                 return
             else:
                 sql = "UPDATE  voters_tbl SET staked = %d where owner = '%s'" %(staked - total,frm)
-            print sql,"1111" 
+             
             cursor.execute(sql)
-            print "2222"
             db.commit()
-            print "3333"
+            
 
             cursor.close()
             db.close() 
            
-            Logger().Log(Text.Text72)
+            Logger().Log(Text.TEXT72)
        except:
             Logger().Error(Text.TEXT73) 
 
