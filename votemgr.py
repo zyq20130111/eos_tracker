@@ -65,7 +65,7 @@ class VoteMgr(object):
             print "unbwAction",frm,total
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
-
+            print "1111"
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
             cursor.execute(sql)
