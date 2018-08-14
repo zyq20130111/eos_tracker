@@ -21,8 +21,8 @@ if __name__ == '__main__':
     VoteMgr().Instance().regProducer("accountnum22",1)
     VoteMgr().Instance().bwAction("vote11111111","accountnum11",400000,0)
     VoteMgr().Instance().bwAction("vote11111122","accountnum22",600000,0) 
-    VoteMgr().Instance().unbwAction("vote11111111","accountnum11",300000,0)
-    VoteMgr().Instance().bwAction("vote11111122","accountnum22",500000,0)
+    VoteMgr().Instance().unbwAction("vote11111111",300000)
+    VoteMgr().Instance().bwAction("vote11111122",500000)
     VoteMgr().Instance().bwAction("proxyproxy11",1)   
     try:
         while 1:
