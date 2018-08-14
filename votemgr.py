@@ -45,7 +45,7 @@ class VoteMgr(object):
             if(cursor.rowcount <= 0):         
                 sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,"","",total,0)
             else:
-                sql = "UPDATE table voters_tbl set staked = %d where owner = '%s'" %(total + staked,voter) 
+                sql = "UPDATE voters_tbl SET staked = %d where owner = '%s'" %(total + staked,voter) 
             print sql
             cursor.execute(sql)
             db.commit()    
@@ -76,7 +76,7 @@ class VoteMgr(object):
             if(cursor.rowcount <= 0):
                 Logger().Log(Text.TEXT72)
             else:
-                sql = "UPDATE table voters_tbl set staked = %d where owner = '%s'" %(staked - total,frm)
+                sql = "UPDATE  voters_tbl SET staked = %d where owner = '%s'" %(staked - total,frm)
 
             cursor.execute(sql)
             db.commit()
@@ -103,7 +103,7 @@ class VoteMgr(object):
             if(cursor.rowcount <= 0):
                 sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(proxy,"","",0,1)
             else:
-                sql = "UPDATE table voters_tbl set is_proxy = 1  where owner = '%s'" %(proxy)
+                sql = "UPDATE  voters_tbl set is_proxy = 1  where owner = '%s'" %(proxy)
 
             cursor.execute(sql)
             db.commit()
@@ -172,7 +172,7 @@ class VoteMgr(object):
             
             while(not oldproxy == ""):
                
-               sql = "UPDATE table voters_tbl set staked = staked - %d where owner = '%s'" %(staked,oldproxy)
+               sql = "UPDATE  voters_tbl set staked = staked - %d where owner = '%s'" %(staked,oldproxy)
                cursor.execute(sql)
                
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(oldproxy)
@@ -184,12 +184,12 @@ class VoteMgr(object):
                   oldproducers = row[3].split(',')
         
                for pb in oldproducers:
-                  sql =  "UPDATE table producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
+                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
                   cursor.execute(sql)
                
 
             for pb in oldproducers:
-                sql =  "UPDATE table producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
+                sql =  "UPDATE producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
                 cursor.execute(sql)
                 
             
@@ -203,9 +203,9 @@ class VoteMgr(object):
             else:
 
                 if(not proxy == ""):
-                   sql = "UPDATE table voters_tbl set proxy = '%s' where owner = '%s'" %(proxy,voter) 
+                   sql = "UPDATE  voters_tbl set proxy = '%s' where owner = '%s'" %(proxy,voter) 
                 else:
-                   sql = "UPDATE table voters_tbl set producer = '%s' where owner = '%s'" %(",".join(producers),voter)
+                   sql = "UPDATE  voters_tbl set producer = '%s' where owner = '%s'" %(",".join(producers),voter)
 
             cursor.execute(sql)
 
@@ -215,7 +215,7 @@ class VoteMgr(object):
  
             while(not newproxy == ""):
 
-               sql = "UPDATE table voters_tbl set staked = staked + %d where owner = '%s'" %(staked,newproxy)
+               sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(staked,newproxy)
                cursor.execute(sql)
 
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(newproxy)
@@ -227,12 +227,12 @@ class VoteMgr(object):
                   newproducers = row[3].split(',')
 
                for pb in newproducers:
-                  sql =  "UPDATE table producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
                   cursor.execute(sql)
 
 
             for pb in newproducers:
-                sql =  "UPDATE table producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
                 cursor.execute(sql)
         
             db.commit()
