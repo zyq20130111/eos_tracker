@@ -174,7 +174,7 @@ class VoteMgr(object):
                return
             print "mmmm",rowcount
             for row in cursor.fetchall():
-
+                print row[2],row[3],row[4]
                 oldproxy = row[2]
                 staked = row[4]
                 oldproducers = row[3].split(',')
