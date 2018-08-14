@@ -185,7 +185,7 @@ class VoteMgr(object):
     def vote(self,cursor,proxy,producers,num):
  
         try:
-             while(not proxy == ""):
+           while(not proxy == ""):
  
                sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(staked,proxy)
                cursor.execute(sql)
