@@ -77,7 +77,7 @@ class VoteMgr(object):
                 Logger().Log(Text.TEXT72)
             else:
                 sql = "UPDATE  voters_tbl SET staked = %d where owner = '%s'" %(staked - total,frm)
-
+            print sql
             cursor.execute(sql)
             db.commit()
 
