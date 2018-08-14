@@ -230,7 +230,7 @@ class VoteMgr(object):
                print newproxy,"uuuuu"
                sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(newstaked,newproxy)
                cursor.execute(sql)
-               
+               print sql               
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(newproxy)
                cursor.execute(sql)
                cursor.fetchall()
