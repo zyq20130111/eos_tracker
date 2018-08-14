@@ -168,17 +168,14 @@ class VoteMgr(object):
             oldproxy = ""
             oldproducers = []
 
-            print "mmmm",cursor.rowcount
             for row in cursor.fetchall():
-                print "ttttttt"
-                print row[2],row[3],row[4]
-                #oldproxy = row[2]
-                #staked = row[4]
-                #oldproducers = row[3].split(',')
-                #oldstaked = staked
-                #newstaked = staked
-                #rowcount = rowcount + 1
-                #print rowcount
+                
+                oldproxy = row[2]
+                staked = row[4]
+                oldproducers = row[3].split(',')
+                oldstaked = staked
+                newstaked = staked
+                rowcount = rowcount + 1
 
             
             while(not oldproxy == ""):
