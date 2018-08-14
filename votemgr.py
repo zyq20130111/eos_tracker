@@ -224,7 +224,7 @@ class VoteMgr(object):
 
             #重新投票时会对新的proxy,producers加上staked
             newproxy = proxy
-            newproducers = []
+            newproducers = producers
             print newproxy,"uuuu"            
             while(not newproxy == ""):
                print newproxy,"uuuuu"
