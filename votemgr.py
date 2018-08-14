@@ -172,7 +172,7 @@ class VoteMgr(object):
             if(cursor.rowcount <= 0):
                print "rowcount <= 0"
                return
-
+            print "mmmm",rowcount
             for row in cursor.fetchall():
 
                 oldproxy = row[2]
@@ -181,6 +181,7 @@ class VoteMgr(object):
                 oldstaked = staked
                 newstaked = staked
                 rowcount = rowcount + 1
+                print rowcount
 
             
             while(not oldproxy == ""):
