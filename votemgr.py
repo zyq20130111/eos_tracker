@@ -168,13 +168,7 @@ class VoteMgr(object):
             oldproxy = ""
             oldproducers = []
 
-            cursor.fetchall()
-            if(cursor.rowcount <= 0):
-               print "rowcount <= 0"
-               return
-
             print "mmmm",cursor.rowcount
-
             for row in cursor.fetchall():
                 print "ttttttt"
                 print row[2],row[3],row[4]
