@@ -81,9 +81,11 @@ class VoteMgr(object):
                 return
             else:
                 sql = "UPDATE  voters_tbl SET staked = %d where owner = '%s'" %(staked - total,frm)
-            print sql 
+            print sql,"1111" 
             cursor.execute(sql)
+            print "2222"
             db.commit()
+            print "3333"
 
             cursor.close()
             db.close() 
