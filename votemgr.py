@@ -22,21 +22,21 @@ class VoteMgr(object):
         return VoteMgr.__instance
 
     def bwAction(self,frm,receive,total,transfer):
-
+        print "bwAction"
 	try:
             voter = ""
             if(not transfer):
                  voter = frm
             else:
                  voter = receive
-
+            
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
 
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
             cursor.execute(sql)
-       
+            print sql
             for row in cursor.fetchall():
                 staked = row[4]
 
@@ -46,7 +46,7 @@ class VoteMgr(object):
                 sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,"","",total,0)
             else:
                 sql = "UPDATE table voters_tbl set staked = %d where owner = '%s'" %(total + staked,voter) 
-
+            print sql
             cursor.execute(sql)
             db.commit()    
                    
