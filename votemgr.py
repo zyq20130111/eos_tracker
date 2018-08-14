@@ -24,7 +24,6 @@ class VoteMgr(object):
     def bwAction(self,frm,receive,total,transfer):
         
 	try:
-            print "bwAction",frm,receive,total
             voter = ""
             if(transfer ==  0):
                  voter = frm
@@ -62,7 +61,7 @@ class VoteMgr(object):
     def unbwAction(self,frm,total):
 
        try:
-            print "unbwAction",frm,total
+
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
             
@@ -96,7 +95,7 @@ class VoteMgr(object):
     def regProxy(self,proxy,isproxy):
 
        try:
-            print "regProxy",proxy,isproxy
+
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
 
@@ -123,7 +122,7 @@ class VoteMgr(object):
 
     def regProducer(self,producer,active):
        try:
-            print "regProducer",producer,active
+          
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
 
@@ -152,7 +151,7 @@ class VoteMgr(object):
     def voteAction(self,voter,proxy,producers):
             
        try:
-            print "voteAction",voter,proxy,producers
+           
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
             rowcount = 0
@@ -219,26 +218,27 @@ class VoteMgr(object):
                 else:
                    sql = "UPDATE  voters_tbl set producer = '%s' where owner = '%s'" %(",".join(producers),voter)
            
-            print sql 
+            
             cursor.execute(sql)
 
             #重新投票时会对新的proxy,producers加上staked
             newproxy = proxy
             newproducers = producers
-            print newproxy,"uuuu"            
+                        
             while(not newproxy == ""):
-               print newproxy,"uuuuu"
+               
                sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(newstaked,newproxy)
-               print sql
-               cursor.execute(sql)
-               print "wwww"               
+               cursor.execute(sql)               
+
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(newproxy)
                cursor.execute(sql)
                cursor.fetchall()
                
                newproxy = ""
                newproducers = []
+
                for row in cursor.fetchall():
+
                   newproxy = row[2]
                   newproducers = row[3].split(',')
                   newstaked = row[4]
