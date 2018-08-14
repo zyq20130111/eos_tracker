@@ -23,7 +23,9 @@ if __name__ == '__main__':
     VoteMgr().Instance().bwAction("vote11111122","accountnum22",600000,0) 
     VoteMgr().Instance().unbwAction("vote11111111",300000)
     VoteMgr().Instance().unbwAction("vote11111122",500000)
-    VoteMgr().Instance().regProxy("proxyproxy11",1)   
+    VoteMgr().Instance().regProxy("proxyproxy11",1)
+    VoteMgr().Instance().voteAction("vote11111111","proxyproxy11",[])   
+    VoteMgr().Instance().voteAction("proxyproxy11","",['accountnum11'])
     try:
         while 1:
             pass
