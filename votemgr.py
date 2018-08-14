@@ -229,8 +229,9 @@ class VoteMgr(object):
             while(not newproxy == ""):
                print newproxy,"uuuuu"
                sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(newstaked,newproxy)
+               print sql
                cursor.execute(sql)
-               print sql               
+               print "wwww"               
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(newproxy)
                cursor.execute(sql)
                cursor.fetchall()
