@@ -150,9 +150,9 @@ class VoteMgr(object):
             Logger().Error(Text.TEXT77)
 
     def voteAction(self,voter,proxy,producers):
-
+            
        try:
-
+            print "voteAction",voter,proxy,producers
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
             rowcount = 0
@@ -160,9 +160,9 @@ class VoteMgr(object):
             #投票者相关字段，重新投票时会对原有的proxy,producers减去staked          
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
-      
+            print sql,"1111"
             cursor.execute(sql)
-
+            print sql,"2222"
             staked = 0
             oldproxy = ""
             oldproducers = []
@@ -175,71 +175,76 @@ class VoteMgr(object):
                 oldproducers = row[3].split(',')
                  
                 rowcount = rowcount + 1
-            
+
+            print rowcount,oldproxy,staked,oldproducers
             while(not oldproxy == ""):
                
                sql = "UPDATE  voters_tbl set staked = staked - %d where owner = '%s'" %(staked,oldproxy)
                cursor.execute(sql)
-               
+               print sql,"aaaaa"
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(oldproxy)
                cursor.execute(sql)
                cursor.fetchall()
-
+               print sql,"bbbb"
                for row in cursor.fetchall():
                   oldproxy = row[2]
                   oldproducers = row[3].split(',')
-        
+               print oldproxy,oldproducers
                for pb in oldproducers:
                   sql =  "UPDATE  producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
                   cursor.execute(sql)
-               
+                  print sql,"for"
 
             for pb in oldproducers:
                 sql =  "UPDATE producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
                 cursor.execute(sql)
+                print sql,"to"
                 
             
              #设置相关字段 
             if(rowcount <= 0):
-
+                print rowcount,"tttttt"
                 if(not proxy == ""):
                    sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,proxy,"",0,0)
                 else:
                    sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,"",",".join(producers),0,0)
             else:
-
+                print rowcount,"yyyyyy"
                 if(not proxy == ""):
                    sql = "UPDATE  voters_tbl set proxy = '%s' where owner = '%s'" %(proxy,voter) 
                 else:
                    sql = "UPDATE  voters_tbl set producer = '%s' where owner = '%s'" %(",".join(producers),voter)
-
+            print sql
             cursor.execute(sql)
 
             #重新投票时会对新的proxy,producers加上staked
             newproxy = proxy
             newproducers = []
- 
+            
             while(not newproxy == ""):
 
                sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(staked,newproxy)
                cursor.execute(sql)
-
+               print sql,"mmmm"
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(newproxy)
                cursor.execute(sql)
                cursor.fetchall()
+               print sql,"nnnn"
 
                for row in cursor.fetchall():
                   newproxy = row[2]
                   newproducers = row[3].split(',')
-
+                  print newproxy,newproducers
                for pb in newproducers:
                   sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
                   cursor.execute(sql)
+                  print sql
 
 
             for pb in newproducers:
                 sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
                 cursor.execute(sql)
+                print
         
             db.commit()
 
