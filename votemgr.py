@@ -69,10 +69,11 @@ class VoteMgr(object):
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
             cursor.execute(sql)
-    
+            print sql,staked    
             for row in cursor.fetchall():
                 staked = row[4]
 
+            print staked
             cursor.fetchall()
 
             if(cursor.rowcount <= 0):
