@@ -202,8 +202,8 @@ class BlockMgr(object):
     def voteAction(self,voter,proxy,producers):
         VoteMgr().Instance().voteAction(voter,proxy,producers)        
 
-    def bwAction(self,voter,total,transfer):
-        VoteMgr().Instance().bwAction(voter,total,transfer)
+    def bwAction(self,frm,receiver,total,transfer):
+        VoteMgr().Instance().bwAction(frm,receiver,total,transfer)
 
     def unbwAction(self,voter,total):
         VoteMgr().Instance().unbwAction(voter,total)

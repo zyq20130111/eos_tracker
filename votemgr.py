@@ -22,10 +22,10 @@ class VoteMgr(object):
         return VoteMgr.__instance
 
     def bwAction(self,frm,receive,total,transfer):
-        print "bwAction"
+        
 	try:
             voter = ""
-            if(not transfer):
+            if(transfer ==  0):
                  voter = frm
             else:
                  voter = receive
