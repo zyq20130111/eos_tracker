@@ -65,22 +65,22 @@ class VoteMgr(object):
             print "unbwAction",frm,total
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
-            print "1111"
+            
             staked = 0
-            sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
+            sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(frm)
             cursor.execute(sql)
-            print sql,staked    
+                
             for row in cursor.fetchall():
                 staked = row[4]
 
-            print staked
+            
             cursor.fetchall()
 
             if(cursor.rowcount <= 0):
                 Logger().Log(Text.TEXT72)
             else:
                 sql = "UPDATE  voters_tbl SET staked = %d where owner = '%s'" %(staked - total,frm)
-            print sql
+            
             cursor.execute(sql)
             db.commit()
 
