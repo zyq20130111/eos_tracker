@@ -225,9 +225,9 @@ class VoteMgr(object):
             #重新投票时会对新的proxy,producers加上staked
             newproxy = proxy
             newproducers = []
-            
+            print newproxy,"uuuu"            
             while(not newproxy == ""):
-
+               print newproxy,"uuuuu"
                sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(newstaked,newproxy)
                cursor.execute(sql)
                
