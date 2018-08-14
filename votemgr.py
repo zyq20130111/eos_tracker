@@ -159,15 +159,18 @@ class VoteMgr(object):
 
             #投票者相关字段，重新投票时会对原有的proxy,producers减去staked          
             staked = 0
-            sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
-            print sql,"1111"
+            sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)      
             cursor.execute(sql)
-            print sql,"2222"
+      
             staked = 0
             oldproxy = ""
             oldproducers = []
 
             cursor.fetchall()
+            if(cursor.rowcount <= 0):
+               print "rowcount <= 0"
+               return
+
             for row in cursor.fetchall():
 
                 oldproxy = row[2]
@@ -176,24 +179,27 @@ class VoteMgr(object):
                  
                 rowcount = rowcount + 1
 
-            print rowcount,oldproxy,staked,oldproducers
+            
             while(not oldproxy == ""):
                
                sql = "UPDATE  voters_tbl set staked = staked - %d where owner = '%s'" %(staked,oldproxy)
                cursor.execute(sql)
-               print sql,"aaaaa"
+               
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(oldproxy)
                cursor.execute(sql)
                cursor.fetchall()
-               print sql,"bbbb"
+                
+               oldproxy = ""   
+               oldproducers = []            
                for row in cursor.fetchall():
                   oldproxy = row[2]
                   oldproducers = row[3].split(',')
-               print oldproxy,oldproducers
+                  staked = row[4]
+
                for pb in oldproducers:
                   sql =  "UPDATE  producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
                   cursor.execute(sql)
-                  print sql,"for"
+                  
 
             for pb in oldproducers:
                 sql =  "UPDATE producers_tbl set total_votes  = total_votes - '%d' where owner = '%s'" %(staked,pb)
@@ -203,18 +209,18 @@ class VoteMgr(object):
             
              #设置相关字段 
             if(rowcount <= 0):
-                print rowcount,"tttttt"
+                
                 if(not proxy == ""):
                    sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,proxy,"",0,0)
                 else:
                    sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,"",",".join(producers),0,0)
             else:
-                print rowcount,"yyyyyy"
+                
                 if(not proxy == ""):
                    sql = "UPDATE  voters_tbl set proxy = '%s' where owner = '%s'" %(proxy,voter) 
                 else:
                    sql = "UPDATE  voters_tbl set producer = '%s' where owner = '%s'" %(",".join(producers),voter)
-            print sql
+            
             cursor.execute(sql)
 
             #重新投票时会对新的proxy,producers加上staked
@@ -225,26 +231,27 @@ class VoteMgr(object):
 
                sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(staked,newproxy)
                cursor.execute(sql)
-               print sql,"mmmm"
+               
                sql ="SELECT * FROM voters_tbl  where owner ='%s'" %(newproxy)
                cursor.execute(sql)
                cursor.fetchall()
-               print sql,"nnnn"
-
+               
+               newproxy = ""
+               newproducers = []
                for row in cursor.fetchall():
                   newproxy = row[2]
                   newproducers = row[3].split(',')
-                  print newproxy,newproducers
+                  
                for pb in newproducers:
                   sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
                   cursor.execute(sql)
-                  print sql
+                  
 
 
             for pb in newproducers:
                 sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
                 cursor.execute(sql)
-                print
+                
         
             db.commit()
 
