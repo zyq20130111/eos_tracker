@@ -80,15 +80,15 @@ class VoteMgr(object):
 
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
-            print "aaaaaa"            
+                        
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(frm)
             cursor.execute(sql)
-            print "bbbbb"    
+                
             for row in cursor.fetchall():
                 staked = row[4]
    
-            print "cccccc"         
+                     
             cursor.fetchall()
 
             if(cursor.rowcount <= 0):
@@ -98,11 +98,11 @@ class VoteMgr(object):
                 sql = "UPDATE  voters_tbl SET staked = %d where owner = '%s'" %(staked - total,frm)
              
             cursor.execute(sql)
-            print "ddddd"
+            
             #投票者相关字段，重新投票时会对原有的proxy,producers减去staked
-            sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(voter)
+            sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(frm)
             cursor.execute(sql)
-            print "eeeee"
+            
             oldproxy = ""
             oldproducers = []
                 
