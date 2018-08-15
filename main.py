@@ -16,7 +16,7 @@ urls = (
 if __name__ == '__main__':
 
     Logger().Init()
-    BlockMgr().Instance().Start()
+    #BlockMgr().Instance().Start()
     VoteMgr().Instance().regProducer("accountnum11",1)
     VoteMgr().Instance().regProducer("accountnum22",1)
     VoteMgr().Instance().bwAction("proxyproxy11","proxyproxy11",100000,0)
