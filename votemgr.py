@@ -246,6 +246,8 @@ class VoteMgr(object):
                      sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
                      cursor.execute(sql)
                      print sql,"1111"
+               
+               return 
 
             #处理producers
             for pb in producers:
