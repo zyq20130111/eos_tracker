@@ -28,6 +28,7 @@ if __name__ == '__main__':
     VoteMgr().Instance().voteAction("vote11111111","proxyproxy11",[])   
     VoteMgr().Instance().voteAction("proxyproxy11","",['accountnum11','accountnum22'])
     VoteMgr().Instance().regProxy("proxyproxy11",0)
+    VoteMgr().Instance().regProxy("proxyproxy11",1)
     print "test finish"
     try:
         while 1:
