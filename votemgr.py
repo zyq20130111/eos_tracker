@@ -161,11 +161,13 @@ class VoteMgr(object):
 
             if(isproxy == 0):
                  sql = "UPDATE  voters_tbl set staked = staked - %d  where owner = '%s'" %(total_proxy,proxy)
+                 print "regproxy",sql
                  cursor.execute(sql)            
                  self.vote(cursor,proxy,producers,-total_proxy,0)
             else:
                  sql = "UPDATE  voters_tbl set staked = staked + %d  where owner = '%s'" %(total_proxy,proxy)
                  cursor.execute(sql)
+                 print "regproxy1",sql
                  self.vote(cursor,proxy,producers,total_proxy,0)
 
             db.commit()
