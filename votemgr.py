@@ -151,13 +151,14 @@ class VoteMgr(object):
            
             proxy = ""
             producers = []
-            
-            for row in cursor.fetchall():
+            row = cursor.fetchone();
+ 
+            #for row in cursor.fetchall():
 
-                proxy = row[2]
-                producers = row[3].split(',')
-                total_proxy = row[6]
-                print "2222",proxy,producers,total_proxy
+            proxy = row[2]
+            producers = row[3].split(',')
+            total_proxy = row[6]
+            print "2222",proxy,producers,total_proxy
               
             if(isproxy == 0):
                  sql = "UPDATE  voters_tbl set staked = staked - %d  where owner = '%s'" %(total_proxy,proxy)
