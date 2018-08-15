@@ -147,7 +147,7 @@ class BlockMgr(object):
             proxy = action.data.get("proxy")
             producers = action.data.get("producers")
 
-            if(produces is None):
+            if(producers is None):
                return None
 
             self.voteAction(voter,proxy,producers)                   
