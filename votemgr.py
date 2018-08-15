@@ -43,7 +43,7 @@ class VoteMgr(object):
             cursor.fetchall()
       
             if(cursor.rowcount <= 0):         
-                sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy,total_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,"","",total,0,0)
+                sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy,total_proxy)VALUES ('%s','%s','%s',%d,%d,%d)" %(voter,"","",total,0,0)
             else:
                 sql = "UPDATE voters_tbl SET staked = %d where owner = '%s'" %(total + staked,voter) 
             
@@ -137,7 +137,7 @@ class VoteMgr(object):
             cursor.fetchall()
 
             if(cursor.rowcount <= 0):
-                sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy,total_proxy)VALUES ('%s','%s','%s',%d,%d)" %(proxy,"","",0,1,0)
+                sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy,total_proxy)VALUES ('%s','%s','%s',%d,%d,%d)" %(proxy,"","",0,1,0)
             else:
                 sql = "UPDATE  voters_tbl set is_proxy = %d  where owner = '%s'" %(isproxy,proxy)
 
@@ -282,9 +282,9 @@ class VoteMgr(object):
             if(rowcount <= 0):
                 
                 if(not proxy == ""):
-                   sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy,total_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,proxy,"",0,0,0)
+                   sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy,total_proxy)VALUES ('%s','%s','%s',%d,%d,%d)" %(voter,proxy,"",0,0,0)
                 else:
-                   sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy,total_proxy)VALUES ('%s','%s','%s',%d,%d)" %(voter,"",",".join(producers),0,0,0)
+                   sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy,total_proxy)VALUES ('%s','%s','%s',%d,%d,%d)" %(voter,"",",".join(producers),0,0,0)
             else:
                 
                 if(not proxy == ""):
