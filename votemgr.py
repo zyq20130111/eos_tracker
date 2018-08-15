@@ -241,15 +241,17 @@ class VoteMgr(object):
 
                #处理producers
                for pb in producers:
-                  sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
-                  cursor.execute(sql)
-                  print sql,"1111"
+                  if(not (pb == "")):
+                     sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                     cursor.execute(sql)
+                     print sql,"1111"
 
             #处理producers
             for pb in producers:
-                sql =  "UPDATE producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
-                print sql,"2222"
-                cursor.execute(sql)
+                if(not (pb == "")):
+                    sql =  "UPDATE producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
+                    print sql,"2222"
+                    cursor.execute(sql)
         except:
              print "error"
 
