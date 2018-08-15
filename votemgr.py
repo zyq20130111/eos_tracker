@@ -147,28 +147,26 @@ class VoteMgr(object):
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(proxy)
             cursor.execute(sql)
-            print "11111",sql
-           
-            proxy = ""
-            producers = []
+            
             row = cursor.fetchone();
- 
-            #for row in cursor.fetchall():
 
-            proxy = row[2]
-            producers = row[3].split(',')
             total_proxy = row[6]
-            print "2222",proxy,producers,total_proxy
               
             if(isproxy == 0):
                  sql = "UPDATE  voters_tbl set staked = staked - %d  where owner = '%s'" %(total_proxy,proxy)
-                 print "regproxy",sql
-                 cursor.execute(sql)            
+                 cursor.execute(sql)
+
+                 proxy = row[2]
+                 producers = row[3].split(',')
+            
                  self.vote(cursor,proxy,producers,-total_proxy,0)
             else:
                  sql = "UPDATE  voters_tbl set staked = staked + %d  where owner = '%s'" %(total_proxy,proxy)
                  cursor.execute(sql)
-                 print "regproxy1",sql
+
+                 proxy = row[2]
+                 producers = row[3].split(',')
+
                  self.vote(cursor,proxy,producers,total_proxy,0)
 
             db.commit()
