@@ -110,7 +110,7 @@ class VoteMgr(object):
 
                 oldproxy = row[2]
                 oldproducers = row[3].split(',')
-
+            print "tttttt"
             self.vote(cursor,oldproxy,oldproducers,-total,-total)
 
             db.commit()
