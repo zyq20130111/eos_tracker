@@ -22,7 +22,7 @@ class VoteMgr(object):
         return VoteMgr.__instance
 
     def bwAction(self,frm,receive,total,transfer):
-        
+        print "bwAction",frm,receive,total,transfer        
 	try:
             voter = ""
             if(transfer ==  0):
@@ -46,7 +46,7 @@ class VoteMgr(object):
                 sql = "INSERT INTO voters_tbl(owner,proxy, producer,staked,is_proxy,total_proxy)VALUES ('%s','%s','%s',%d,%d,%d)" %(voter,"","",total,0,0)
             else:
                 sql = "UPDATE voters_tbl SET staked = %d where owner = '%s'" %(total + staked,voter) 
-            
+            print sql
             cursor.execute(sql)
 
             #投票者相关字段，重新投票时会对原有的proxy,producers减去staked
@@ -75,7 +75,7 @@ class VoteMgr(object):
            Logger().Error(Text.TEXT71)
 
     def unbwAction(self,frm,total):
-
+       print "unbwAction",frm,total
        try:
 
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
@@ -98,7 +98,7 @@ class VoteMgr(object):
                 sql = "UPDATE  voters_tbl SET staked = %d where owner = '%s'" %(staked - total,frm)
              
             cursor.execute(sql)
-            
+            print sql
             #投票者相关字段，重新投票时会对原有的proxy,producers减去staked
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(frm)
             cursor.execute(sql)
@@ -124,7 +124,7 @@ class VoteMgr(object):
             Logger().Error(Text.TEXT73) 
 
     def regProxy(self,proxy,isproxy):
-
+       print "regProxy",proxy,isproxy
        try:
 
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
@@ -142,7 +142,7 @@ class VoteMgr(object):
                 sql = "UPDATE  voters_tbl set is_proxy = %d  where owner = '%s'" %(isproxy,proxy)
 
             cursor.execute(sql)
-
+            print sql
             #投票者相关字段，重新投票时会对原有的proxy,producers减去staked
             staked = 0
             sql = "SELECT * FROM voters_tbl  where owner ='%s'" %(proxy)
@@ -179,6 +179,7 @@ class VoteMgr(object):
             Logger().Error(Text.TEXT75)
 
     def regProducer(self,producer,active):
+       print "regProducer",producer,active
        try:
           
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
@@ -195,7 +196,7 @@ class VoteMgr(object):
                 sql = "INSERT INTO producers_tbl(owner,total_votes,is_active)VALUES ('%s',%d,%d)" %(producer,0,active)
             else:
                 sql = "UPDATE producers_tbl SET is_active = %d  where owner = '%s'" %(active,producer)
-
+            print sql
             cursor.execute(sql)
             db.commit()
 
@@ -207,7 +208,7 @@ class VoteMgr(object):
             Logger().Error(Text.TEXT77)
 
     def vote(self,cursor,proxy,producers,staked,proxy_staked):
- 
+        print "vote",proxy,producers,staked,proxy_staked
         try:
             stopStake = 0
             
@@ -230,13 +231,14 @@ class VoteMgr(object):
                if((is_proxy == 1) and (stopStake == 0)):
                   sql = "UPDATE  voters_tbl set staked = staked + %d where owner = '%s'" %(staked,proxy)
                   cursor.execute(sql)
+                  print sql,"11111"
                else:
                    stopStake = 1
                
  
                sql = "UPDATE  voters_tbl set total_proxy = total_proxy + %d where owner = '%s'" %(proxy_staked,proxy)
                cursor.execute(sql)
-
+               print sql,"22222"
                #处理下一个代理
                proxy = newproxy
 
@@ -245,7 +247,7 @@ class VoteMgr(object):
                   if(not (pb == "")):
                      sql =  "UPDATE  producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
                      cursor.execute(sql)
-                     print sql,"1111"
+                     print sql,"3333"
                
                return 
 
@@ -253,13 +255,13 @@ class VoteMgr(object):
             for pb in producers:
                 if(not (pb == "")):
                     sql =  "UPDATE producers_tbl set total_votes  = total_votes + '%d' where owner = '%s'" %(staked,pb)
-                    print sql,"2222"
+                    print sql,"44444"
                     cursor.execute(sql)
         except:
              print "error"
 
     def voteAction(self,voter,proxy,producers):
-            
+       print "voteAction",voter,proxy,producers    
        try:
            
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
@@ -299,7 +301,7 @@ class VoteMgr(object):
                 else:
                    sql = "UPDATE  voters_tbl set producer = '%s' where owner = '%s'" %(",".join(producers),voter)
            
-            
+            print "5555",sql
             cursor.execute(sql)
 
             #重新投票时会对新的proxy,producers加上staked
