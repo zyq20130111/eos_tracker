@@ -171,7 +171,7 @@ class BlockMgr(object):
 
             self.bwAction(frm,receiver,total,transfer)
 
-        elif(aciton.account == "eosio" and action.name == "undelegatebw"):
+        elif(action.account == "eosio" and action.name == "undelegatebw"):
             
             voter = action.data.get("from")
 
@@ -184,7 +184,7 @@ class BlockMgr(object):
 
             self.unbwAction(voter,total)
 
-        elif(aciton.account == "eosio" and action.name == "regproxy"):
+        elif(action.account == "eosio" and action.name == "regproxy"):
             proxy = action.data.get("proxy")
             isproxy = action.data.get("isproxy") 
             self.regProxy(proxy,isproxy)
