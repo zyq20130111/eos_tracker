@@ -92,9 +92,11 @@ class BlockMgr(object):
                          owner = row["owner"]
 
                          total_votes = row["total_votes"]
+                         print total_votes,"111"
                          total_votes = float(total_votes) / 4235896144.3639
+                         print float(total_votes),"2222"
                          total_votes = long(total_votes)
-
+                         print total_votes,"3333"
                          self.sartAccount = owner
                          VoteMgr().Instance().regProducer(owner,1,total_votes)
                          print owner,total_votes
