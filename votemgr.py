@@ -178,7 +178,7 @@ class VoteMgr(object):
        except:
             Logger().Error(Text.TEXT75)
 
-    def regProducer(self,producer,active):
+    def regProducer(self,producer,active,staked):
        print "regProducer",producer,active
        try:
           
@@ -193,9 +193,9 @@ class VoteMgr(object):
             cursor.fetchall()
             
             if(cursor.rowcount <= 0):
-                sql = "INSERT INTO producers_tbl(owner,total_votes,is_active)VALUES ('%s',%d,%d)" %(producer,0,active)
+                sql = "INSERT INTO producers_tbl(owner,total_votes,is_active)VALUES ('%s',%d,%d)" %(producer,staked,active)
             else:
-                sql = "UPDATE producers_tbl SET is_active = %d  where owner = '%s'" %(active,producer)
+                sql = "UPDATE producers_tbl SET is_active = %d,total_votes = %d  where owner = '%s'" %(active,staked,producer)
             print sql
             cursor.execute(sql)
             db.commit()

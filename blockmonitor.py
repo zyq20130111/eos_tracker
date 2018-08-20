@@ -86,10 +86,17 @@ class BlockMgr(object):
                  js = json.loads(r.text)
                  print js
                  if((not js is None) and (not js["rows"] is None)):
+
                       for row in js["rows"]:
+
                          owner = row["owner"]
+
                          total_votes = row["total_votes"]
+                         total_votes = float(total_votes) / 4235896144.3639
+                         total_votes = long(total_votes)
+
                          self.sartAccount = owner
+                         VoteMgr().Instance().regProducer(owner,1,total_votes):
                          print owner,total_votes
  
                  if( (not js is None) and (js["more"] == False) ):
