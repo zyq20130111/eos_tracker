@@ -179,7 +179,7 @@ class VoteMgr(object):
             Logger().Error(Text.TEXT75)
 
     def regProducer(self,producer,active,staked):
-       print "regProducer",producer,active
+       print "regProducer",producer,active,staked
        try:
           
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
