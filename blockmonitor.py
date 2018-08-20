@@ -78,7 +78,7 @@ class BlockMgr(object):
         headers = {'content-type': "application/json"}
         url = Config.HTTP_URL + "get_table_rows"
         try:
-             start = " " + start
+             start = ' "{0}"'.format(start)
              r = requests.post(url,data =json.dumps({"scope":"eosio","code":"eosio","table":"producers","json":true,"limit":3,"lower_bound":start}),headers = headers);
              print r.text
              if( r.status_code == 200):
