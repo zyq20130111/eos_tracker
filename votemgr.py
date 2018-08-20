@@ -185,7 +185,6 @@ class VoteMgr(object):
             db = MySQLdb.connect(Config.DB_SERVER, Config.DB_USER, Config.DB_PWD, Config.DB_NAME, charset='utf8' )
             cursor = db.cursor()
 
-            staked = 0
             sql = "SELECT * FROM producers_tbl  where owner ='%s'" %(producer)
             
             cursor.execute(sql)
