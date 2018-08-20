@@ -96,7 +96,7 @@ class BlockMgr(object):
                          total_votes = long(total_votes)
                          
                          self.sartAccount = owner
-                         VoteMgr().Instance().regProducer(owner,1,total_votes)
+                         VoteMgr().Instance().regProducer(owner,1,total_votes * 10000)
                          
  
                  if( (not js is None) and (js["more"] == False) ):
