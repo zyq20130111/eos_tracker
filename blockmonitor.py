@@ -92,8 +92,9 @@ class BlockMgr(object):
                          self.sartAccount = owner
                          print owner,total_votes
  
-                 if( (not js is None) and (js["more"] == 0) ):
-                         self.sartAccount = ""                        
+                 if( (not js is None) and (js["more"] == False) ):
+                         self.sartAccount = "" 
+                         print "start request"         
                     
              else:
                  print "request error1"
