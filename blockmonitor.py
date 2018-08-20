@@ -94,8 +94,8 @@ class BlockMgr(object):
                          self.sartAccount = ""                        
                     
              else:
-                 "request error1"
-                  self.sartAccount = ""
+                 print "request error1"
+                 self.sartAccount = ""
         except:
              print "request error2"
              self.sartAccount = "" 
