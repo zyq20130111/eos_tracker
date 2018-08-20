@@ -80,6 +80,7 @@ class BlockMgr(object):
         try:
              start = " " + start
              r = requests.post(url,data =json.dumps({"scope":"eosio","code":"eosio","table":"producers","json":true,"limit":3,"lower_bound":start}),headers = headers);
+             print r.text
              if( r.status_code == 200):
                  js = json.loads(r.text)
 
